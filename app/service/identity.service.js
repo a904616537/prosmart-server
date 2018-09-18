@@ -11,6 +11,9 @@ _mongo       = mongoose.model('identity'),
 user_mongo   = mongoose.model('user');
 
 module.exports = {
+	findIdentity(user, type, callback) {
+		_mongo.findIdentity(user, type, callback);
+	},
 	// 创建
 	Install(model) {
 		return new Promise((resolve, reject) => {

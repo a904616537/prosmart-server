@@ -24,7 +24,7 @@ router.route('/')
 })
 .put((req, res) => {
 	let {_id, info} = req.body;
-	info = JSON.parse(info);
+	// info = JSON.parse(info);
 	console.log('req.body', req.body)
 	_service.Update(_id, info)
 	.then(mongo => res.send(mongo))

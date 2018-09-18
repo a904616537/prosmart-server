@@ -8,21 +8,23 @@
 var mongoose = require('mongoose'),
 Schema       = mongoose.Schema,
 user_Schema  = new Schema({
-	subscribe      : Number,
-	openid         : String,
-	nickname       : String,
-	sex            : Number,
-	language       : String,
-	city           : String,
-	province       : String,
-	country        : String,
-	headimgurl     : String,
-	unionid        : String,
-	remark         : String,
-	phone          : String,
-	email          : String,
-	identity       : { type : Schema.Types.ObjectId, ref : 'identity'},	// 用户身份
-	CreateTime     : { type : Date, default : Date.now }
+	subscribe  : Number,
+	openid     : String,
+	nickname   : String,
+	sex        : Number,
+	language   : String,
+	city       : String,
+	province   : String,
+	country    : String,
+	headimgurl : String,
+	unionid    : String,
+	remark     : String,
+	phone      : String,
+	email      : String,
+	born       : String,	// 生日
+	manage     : String,	// 管理
+	identity   : { type : Schema.Types.ObjectId, ref : 'identity'},	// 用户身份
+	CreateTime : { type : Date, default : Date.now }
 });
 
 

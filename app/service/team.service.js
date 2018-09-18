@@ -10,6 +10,30 @@ moment       = require('moment'),
 _mongo       = mongoose.model('team');
 
 module.exports = {
+	all(callback) {
+		_mongo.find({})
+		.exec((err, doc) => {
+			callback(doc);
+		})
+	},
+	getMyTeam(identity_id, callback) {
+		_mongo.find({})
+		.or([
+			{'identity': { $in: [identity_id] }},
+			{'players': { $in: [identity_id] }}
+		])
+		.exec((err, doc) => callback(doc))
+	},
+	Search(query, callback) {
+		_mongo.find({})
+		.or([
+			{'uid': { $in: [parseInt(query)] }},
+			{'info.name': { $in: [query] }}
+		])
+		.exec((err, doc) => {
+			callback(doc);
+		})
+	},
 	// 创建
 	Install(model) {
 		return new Promise((resolve, reject) => {

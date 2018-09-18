@@ -4,25 +4,25 @@
 
 'use strict';
 
-const config   = require('../../setting/config'),
-mongoose       = require('mongoose'),
-moment         = require('moment'),
-user_mongo     = mongoose.model('user'),
-sms            = require('../helper/sms'),
-encryption     = require('../helper/encryption');
+const config = require('../../setting/config'),
+mongoose     = require('mongoose'),
+moment       = require('moment'),
+_mongo       = mongoose.model('user'),
+sms          = require('../helper/sms'),
+encryption   = require('../helper/encryption');
 
 module.exports = {
 	getUserById(user_id, callback) {
-		user_mongo.findOne({_id : user_id})
+		_mongo.findOne({_id : user_id})
 		.exec((err, user) => callback(user))
 	},
 	// 获取用户
 	getUser(page = 1, size = 1, sort = 'CreateTime|asc', callback) {
 		let q = {};
-		user_mongo.count(q)
+		_mongo.count(q)
 		.exec((err, count) => {
 			let start = (page - 1) * size;
-			let query = user_mongo.find(q)
+			let query = _mongo.find(q)
 			query.limit(size)
 			query.skip(start)
 			if(sort && sort != '') {
@@ -37,18 +37,45 @@ module.exports = {
 			})
 		})
 	},
+	updateUser(demo) {
+		return new Promise((resolve, reject) => {
+			_mongo.findOne({_id : demo._id})
+			.exec((err, user) => {
+				if(user) {
+					delete demo._id;
+					Object.assign(user, demo);
+					user.save(err => {
+						if(err) return reject(err)
+						resolve(user);
+					})
+				} else reject()
+			})
+		})
+	},
 	getUserForOpenId(openid, callback) {
-		user_mongo.findOne({openid})
+		_mongo.findOne({openid})
 		.populate({
 			path     : 'identity',
 			model    : 'identity',
 		})
 		.exec((err, user) => callback(user))
 	},
+	UpdateIdentity(user_id, identity, callback) {
+		this.getUserById(user_id, user => {
+			if(user) {
+				user.identity = identity;
+				user.save(err => {
+					if(err) console.log('身份切换', err);
+					callback(user);
+				})
+			}
+			else callback(null);
+		})
+	},
 
 	UpdateImage(demo) {
 		return new Promise((resolve, reject) => {
-			user_mongo.findOne({_id : demo._id})
+			_mongo.findOne({_id : demo._id})
 			.exec((err, user) => {
 				if(user) {
 					user.headimgurl = demo.url;
@@ -64,10 +91,10 @@ module.exports = {
 	Update(user) {
 		return new Promise((resolve, reject) => {
 			delete user._id;
-			user_mongo.findOne({openid:user.openid})
+			_mongo.findOne({openid:user.openid})
 			.exec((err, user) => {
 				if(user) {
-					user_mongo.update(
+					_mongo.update(
 					{openid: user.openid},
 					user,
 					{upsert : true},
@@ -81,10 +108,10 @@ module.exports = {
 	},
 	InsertUser(user) {
 		return new Promise((resolve, reject) => {
-			user_mongo.findOne({openid : user.openid})
+			_mongo.findOne({openid : user.openid})
 			.exec((err, mongo) => {
 				if(mongo) {
-					user_mongo.update(
+					_mongo.update(
 					{openid: user.openid},
 					user,
 					{upsert : true},
@@ -93,7 +120,7 @@ module.exports = {
 						resolve(user);
 					})
 				} else {
-					var model  = new user_mongo(user);
+					var model  = new _mongo(user);
 					model.save(err => {
 						if(err) return reject(err)
 						resolve(model);	
@@ -105,7 +132,7 @@ module.exports = {
 
 	SelectByOpenId(openid) {
 		return new Promise((resolve, reject) => {
-			user_mongo.findOne({openid})
+			_mongo.findOne({openid})
 			.exec((err, doc) => {
 				if (err) return reject(err);
 				resolve(doc);
@@ -115,11 +142,11 @@ module.exports = {
 	// 账户注册
 	Register(user) {
 		return new Promise((resolve, reject) => {
-			user_mongo.findByUser([user.phone, user.email], (err, doc) => {
+			_mongo.findByUser([user.phone, user.email], (err, doc) => {
 				if(doc) return reject();
 
 				encryption.cipher(user.password, (pwd, key) => {
-					user = new user_mongo({
+					user = new _mongo({
 						name     : user.name,
 						phone    : user.phone,
 						email    : user.email,

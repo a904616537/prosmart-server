@@ -70,8 +70,6 @@ module.exports = (app, config) => {
     //登录拦截器
 
     let privateUrl = [
-        "/user",
-        "/payment/wechat"
     ];
 
     app.use((req, res, next) => {
