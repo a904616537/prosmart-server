@@ -30,6 +30,13 @@ router.route('/')
 	.then(mongo => res.send(mongo))
 	.catch(err => res.status(500).send(err))
 })
+.delete((req, res) => {
+	const {_id} = req.query;
+	
+	_service.delete(_id)
+	.then(mongo => res.send(mongo))
+	.catch(err => res.status(500).send(err))
+})
 
 router.route('/all')
 .get((req, res) => {

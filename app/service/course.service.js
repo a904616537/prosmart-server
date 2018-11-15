@@ -65,6 +65,18 @@ module.exports = {
 			})
 		})
 	},
+	delete(_id) {
+		return new Promise((resolve, reject) => {
+			_mongo.findById(_id, course => {
+				if(!course) return reject(false);
+
+				course.remove(err => {
+					if(err) return reject(false);
+					return resolve(true);
+				})
+			})
+		})
+	},
 	addVideo(_id, video) {
 		return new Promise((resolve, reject) => {
 			_mongo.findById(_id, doc => {
