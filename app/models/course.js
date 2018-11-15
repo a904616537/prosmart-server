@@ -10,9 +10,10 @@ moment         = require('moment'),
 Schema         = mongoose.Schema,
 Item_Schema    = new Schema({
 	title      : { type : String, default : ''},	// 视频标题
-	desc       : { type : String, default : ''},
+	desc       : { type : String, default : ''},	// 视频描述
 	img        : { type : String, default : ''}, 	// 视频封面
 	video      : { type : String},					// 视频地址
+	type       : { type : Number, default : 0},		// 视频类型,0:预视频,1:练习视频
 	order      : { type : Number, default : 20},
 	CreateTime : { type : Date, default : Date.now }
 }),
@@ -20,7 +21,7 @@ _Schema        = new Schema({
 	title      : { type : String, default : ''},
 	desc       : { type : String, default : ''},
 	img        : { type : String, default : ''},	// 课程封面
-	leve       : { type : Number, default : 0},		// 课程等级,0:初级，1:中级，2:高级
+	level      : { type : Number, default : 0},		// 课程等级,0:初级，1:中级，2:高级
 	item       : [Item_Schema],
 	order      : { type : Number, default : 20},
 	CreateTime : { type : Date, default : Date.now }

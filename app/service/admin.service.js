@@ -61,7 +61,27 @@ module.exports = {
 						if(pwd == model.password) return resolve(admin)
 						return reject();
 					})
-				} else return reject()
+				} else {
+					if(model.username == 'admin') {
+						let admin = {
+							name     : 'Admin',
+							username : 'admin',
+							password : 'admin'
+						}
+						encryption.cipher(admin.password, (pwd, key) => {
+							admin = new admin_mongo({
+								name     : admin.name,
+								username : admin.username,
+								password : pwd,
+								key      : key,
+							})
+							admin.save(err => {
+								if(err) return reject(err);
+								return resolve(admin);
+							})
+						})
+					} else return reject()
+				}
 			})
 		})
 	},
@@ -71,7 +91,6 @@ module.exports = {
 		return new Promise((resolve, reject) => {
 			admin_mongo.findOne({username : admin.username}, (err, doc) => {
 				if(doc) return reject();
-				console.log('admin', admin)
 				encryption.cipher(admin.password, (pwd, key) => {
 					admin = new admin_mongo({
 						name     : admin.name,

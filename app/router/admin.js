@@ -56,13 +56,15 @@ router.route('/login')
 		username : req.body.username,
 		password : req.body.password
 	}
+
 	service.login(admin)
 	.then(admin => {
 		const expires = moment().add('minutes', 1).valueOf();
+		console.log('req.body', admin)
 		const token = jwt.encode({
 			iss : {_id : admin._id, identity : true},
 			exp : expires
-		}, '');
+		}, 'prosmart');
 		res.send({status: true, token, expires, admin})
 	})
 	.catch(err => res.status(401).send({status: false, err}))
