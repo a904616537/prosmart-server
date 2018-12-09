@@ -14,6 +14,7 @@ router        = express.Router();
 router.route('/')
 .get((req, res) => {
 	_service.getList(arr => {
+		console.log('getList', arr);
 		res.send(arr);
 	})
 })

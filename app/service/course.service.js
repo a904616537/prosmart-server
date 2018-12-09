@@ -11,7 +11,7 @@ _mongo       = mongoose.model('course');
 
 module.exports = {
 	getList(callback) {
-		_mongo.find({}, ['title', 'desc', 'img', 'leve', 'order'])
+		_mongo.find({})
 		.sort({order : 1})
 		.exec((err, doc) => callback(doc));
 	},
