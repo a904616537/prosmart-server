@@ -56,7 +56,6 @@ module.exports = {
 					doc.title = course.title;
 					doc.desc  = course.desc;
 					doc.img   = course.img;
-					doc.item  = course.item;
 					doc.level = course.level;
 					doc.order = course.order;
 					doc.save(err => {

@@ -57,25 +57,20 @@ router.route('/video')
 	_service.getCourse(_id, doc => res.send(doc));
 })
 .post((req, res) => {
-	req.body.video= JSON.parse(req.body.video);
-	const {_id, video} = req.body;
-	_service.addVideo(_id, video)
+	const model = req.body;
+	_service.addVideo(model.pid, model)
 	.then(mongo => res.send(mongo))
 	.catch(err => res.status(500).send(err))
 })
 .put((req, res) => {
-	req.body.video = JSON.parse(req.body.video);
-	const {_id, video} = req.body;
-	console.log('req.body', req.body)
-	
-	_service.updateVideo(_id, video)
+	const model = req.body;
+	_service.updateVideo(model.pid, model)
 	.then(mongo => res.send(mongo))
 	.catch(err => res.status(500).send(err))
 })
 .delete((req, res) => {
-	const {_id, video_id} = req.body;
-	
-	_service.removeVideo(_id, video_id)
+	const model = req.body;
+	_service.removeVideo(model.pid, model._id)
 	.then(mongo => res.send(mongo))
 	.catch(err => res.status(500).send(err))
 })
