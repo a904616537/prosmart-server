@@ -29,7 +29,10 @@ module.exports = {
 				else sort = '-' + sort[0]
 				query.sort(sort)
 			}
-			query.exec((err, courses) => callback(courses, count));
+			query.exec((err, courses) => {
+				console.log('all', courses)
+				callback(courses, count)
+			});
 		})
 	},
 	getCourse(_id, callback) {
