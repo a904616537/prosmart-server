@@ -10,8 +10,49 @@ moment       = require('moment'),
 _mongo       = mongoose.model('team');
 
 module.exports = {
+	get(_id, callback) {
+		_mongo.findOne({_id})
+		.populate({
+			path     : 'identity',
+			model    : 'identity'
+		})
+		.populate({
+			path     : 'players',
+			model    : 'identity',
+			populate : {
+				path     : 'user',
+				model    : 'user'
+			}
+		})
+		.populate({
+			path     : 'apply.player',
+			model    : 'identity',
+			populate : {
+				path     : 'user',
+				model    : 'user'
+			}
+		})
+		.exec((err, doc) => callback(doc))
+	},
 	all(callback) {
 		_mongo.find({})
+		.populate({
+			path     : 'identity',
+			model    : 'identity'
+		})
+		.populate({
+			path     : 'players',
+			model    : 'identity'
+		})
+		.populate({
+			path     : 'apply.player',
+			model    : 'identity',
+			populate : {
+				path     : 'user',
+				model    : 'user'
+			}
+		})
+		
 		.exec((err, doc) => {
 			callback(doc);
 		})
@@ -30,6 +71,18 @@ module.exports = {
 			{'uid': { $in: [parseInt(query)] }},
 			{'info.name': { $in: [query] }}
 		])
+		.populate({
+			path     : 'identity',
+			model    : 'identity'
+		})
+		.populate({
+			path     : 'players',
+			model    : 'identity'
+		})
+		.populate({
+			path     : 'apply.player',
+			model    : 'identity'
+		})
 		.exec((err, doc) => {
 			callback(doc);
 		})
@@ -37,10 +90,18 @@ module.exports = {
 	// 创建
 	Install(model) {
 		return new Promise((resolve, reject) => {
-			const mongo  = new _mongo(model);
-			_mongo.install(mongo, doc => {
-				if(doc) resolve(doc);
-				else reject()
+			console.log('model', model)
+			_mongo.findOne({identity : model.identity})
+			.exec((err, doc) => {
+				console.log('doc', doc)
+				if(doc) return reject();
+				else {
+					const mongo  = new _mongo(model);
+					_mongo.install(mongo, doc => {
+						if(doc) resolve(doc);
+						else reject()
+					})
+				}
 			})
 		})
 	},
@@ -75,6 +136,7 @@ module.exports = {
 	reomvePlayer(_id, player) {
 		return new Promise((resolve, reject) => {
 			_mongo.findById(_id, doc => {
+				console.log('reomvePlayer', _id, player,doc)
 				if(doc) {
 					const index = doc.players.findIndex(val => val==player);
 					doc.players.splice(index, 1);

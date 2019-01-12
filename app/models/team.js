@@ -15,7 +15,15 @@ item_Schema    = new Schema({
 _Schema        = new Schema({
 	identity   : { type : Schema.Types.ObjectId, ref : 'identity'},		// 创建者身份信息
 	uid        : { type : String, default : ''},						// 球队UID
-	info       : { type : Object},										// 球队信息
+	info       : { type : Object, default : {
+		address     : '',
+		city        : '',
+		coach_name  : '',
+		group       : '',
+		header_logo : '',
+		name        : '',
+		desc        : ''
+	}},										// 球队信息
 	players    : [{type : Schema.Types.ObjectId, ref : 'identity' }],	// 球员
 	apply      : [item_Schema],											// 申请列表
 	CreateTime : { type : Date, default : Date.now }

@@ -21,22 +21,26 @@ router.route('/')
 .post((req, res) => {
 	const model = req.body;
 	_service.Install(model)
-	.then(mongo => res.send(mongo))
-	.catch(err => res.status(500).send('球队已存在，或信息出错！'))
+	.then(mongo => res.send({status : true, data : mongo}))
+	.catch(err => res.send({status : false, msg : '你的球队已存在'}))
 })
 .put((req, res) => {
 	let {_id, info} = req.body;
 	info = JSON.parse(info);
-	console.log('req.body', req.body)
 	_service.Update(_id, info)
 	.then(mongo => res.send(mongo))
 	.catch(err => res.status(500).send('保存出错'))
 })
 
+router.route('/id')
+.get((req, res) => {
+	const {_id} = req.query;
+	_service.get(_id, doc => res.send(doc))
+})
+
 // 搜索球队
 router.route('/search')
 .get((req, res) => {
-	console.log('req', req.query)
 	const {query} = req.query;
 	_service.Search(query, (teams) => {
 		console.log('teams', teams);
@@ -58,18 +62,17 @@ router.route('/player')
 	_service.apply(_id, player)
 	.then(mongo => {
 		res.send({status : true, data : mongo})
-		setTimeout(() => {
-			_service.agree(_id, player, true)
-			.then(mongo => console.log('自动完成加入球队'))
-			.catch(err => console.log(err))
-		}, 60000);
+		// setTimeout(() => {
+		// 	_service.agree(_id, player, true)
+		// 	.then(mongo => console.log('自动完成加入球队'))
+		// 	.catch(err => console.log(err))
+		// }, 60000);
 	})
 	.catch(err => res.send({status : false, msg : err}))
 })
 // 申请处理
 .put((req, res) => {
 	let {_id, player, agree} = req.body;
-	console.log('req.body', req.body);
 	_service.agree(_id, player, agree)
 	.then(mongo => res.send({status : true, data : mongo}))
 	.catch(err => res.send({status : false, msg : err}))
