@@ -100,23 +100,13 @@ module.exports = app => {
 					const {user, is_sub} = doc;
 					console.log('user subscribe', message.FromUserName)
 					socket.emit('subscribe', {status : true, user : user, is_sub, subscribe : true})
-					res.reply([{
-						title: '欢迎关注proSmart',
-						description: '点此卡片登录',
-						picurl: 'https://thyrsi.com/t6/372/1537287593x-1404781240.jpg',
-						url: `http://test.mybarrefitness.com?openid=${message.FromUserName}`
-					}]);
+					res.reply('欢迎关注proSmart');
 				})
 				.catch((doc) => {
 					const {user, is_sub} = doc;
 					socket.emit('subscribe', {status : false, is_sub, subscribe : true})
 					console.error('user subscribe error', doc);
-					res.reply([{
-						title: '欢迎关注proSmart',
-						description: '点此卡片登录',
-						picurl: 'https://thyrsi.com/t6/372/1537287593x-1404781240.jpg',
-						url: `http://test.mybarrefitness.com?openid=${message.FromUserName}`
-					}]);
+					res.reply('欢迎关注proSmart');
 				})
 				
 			} else if(message.Event == 'unsubscribe') {
