@@ -94,11 +94,11 @@ module.exports = app => {
 		})
 		.event((message, req, res, next) => {
 			if(message.Event == 'subscribe') {
-				console.log(moment(), '关注用户', message)
+				console.log('关注用户', message)
 				service.getUserAndInsert(message.FromUserName)
 				.then((doc) => {
 					const {user, is_sub} = doc;
-					console.log(moment(),'user subscribe', message.FromUserName)
+					console.log('user subscribe', message.FromUserName)
 					socket.emit('subscribe', {status : true, user : user, is_sub, subscribe : true})
 					res.reply([{
 						title: '欢迎关注proSmart',
@@ -110,7 +110,7 @@ module.exports = app => {
 				.catch((doc) => {
 					const {user, is_sub} = doc;
 					socket.emit('subscribe', {status : false, is_sub, subscribe : true})
-					console.error(moment(), 'user subscribe error', err);
+					console.error('user subscribe error', doc);
 					res.reply([{
 						title: '欢迎关注proSmart',
 						description: '点此卡片登录',
