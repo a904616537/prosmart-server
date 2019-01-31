@@ -68,18 +68,18 @@ const config = {
 			apiKey  : '336622ee05a97de6b23b5c6a5a76e3f7'
 		},
 		wechat : {
-			appid          : 'wx06c82c3cbb012752',
-			appsecret      : '0f7f047780e15e68308ed981c4f0bfed',
+			appid          : 'wxee206e1414616120',
+			appsecret      : '26c3defea7c82775698b0e9fcceb78d0',
 			token          : project,
-			encodingAESKey : 'qtsV9j2v5U5gUNLLOB9S5CEpTCrsXnoWVLvSx6umZwK',
-			url            : `http://filtration.${project}.com.cn`,
+			encodingAESKey : 'RwWdU9k689mFy5JF2BcQqpdXf7AKAcPLXEeivy6SE3P',
+			url            : `http://sportgochina.com`,
 			oauth          : '/wechat/oauth/login',
 			local          : '47.100.162.54',
 			pay : {
-				partnerKey : "C373DDCA1B97E59F7424553D36795A62",
-				appId      : "wx06c82c3cbb012752",
-				mchId      : "1493918942",
-				notifyUrl  : `http://filtration.${project}.com.cn/server/payment`,
+				partnerKey : "",
+				appId      : "wxee206e1414616120",
+				mchId      : "",
+				notifyUrl  : ``,
 				// pfx        : fs.readFileSync(rootPath + '/setting/apiclient_cert.p12')
 			}
 		}
