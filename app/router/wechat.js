@@ -60,7 +60,7 @@ router.route('/wechat/menu/set')
 		"button" :[{
 			"type" : "view",
 			"name" : "Sportgo",
-			"url"  : `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${setting.appid}&redirect_uri=http%3A%2F%2Ftest.mybarrefitness.com%2F&response_type=code&scope=snsapi_userinfo&state=123#wechat_redirect`
+			"url"  : `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${setting.appid}&redirect_uri=http%3A%2F%2Fsportgochina.com%2F&response_type=code&scope=snsapi_userinfo&state=123#wechat_redirect`
 		}]
 	}
 	service.createMenu(menu, result => {
