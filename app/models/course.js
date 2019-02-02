@@ -25,7 +25,7 @@ _Schema        = new Schema({
 	item       : [Item_Schema],
 	order      : { type : Number, default : 20},
 	CreateTime : { type : Date, default : Date.now }
-});
+}, {usePushEach: true});
 
 _Schema.virtual('date').get(() => {
   this._id.getTimestamp();

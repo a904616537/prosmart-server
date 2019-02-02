@@ -83,9 +83,10 @@ module.exports = {
 		return new Promise((resolve, reject) => {
 			_mongo.findById(_id, doc => {
 				if(doc) {
+					delete video.pid;
 					doc.item.push(video);
 					doc.save(err => {
-						// console.error(err)
+						console.error(err)
 						if(err) reject('数据保存出错');
 						else resolve(doc);
 					})
