@@ -14,7 +14,6 @@ router        = express.Router();
 router.route('/')
 .get((req, res) => {
 	_service.getList(arr => {
-		console.log('getList', arr);
 		res.send(arr);
 	})
 })
@@ -26,14 +25,12 @@ router.route('/')
 })
 .put((req, res) => {
 	let course = req.body;
-	console.log('course', course)
 	_service.Update(course)
 	.then(mongo => res.send(mongo))
 	.catch(err => res.status(500).send(err))
 })
 .delete((req, res) => {
-	const {_id} = req.query;
-	
+	const {_id} = req.body;
 	_service.delete(_id)
 	.then(mongo => res.send(mongo))
 	.catch(err => res.status(500).send(err))
